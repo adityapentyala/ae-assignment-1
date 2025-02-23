@@ -30,25 +30,39 @@ formula_2 <- Bankrupt. ~ Total.debt.Total.net.worth + Debt.ratio.. +
 formula_3 <- Bankrupt. ~ Total.debt.Total.net.worth + Debt.ratio.. + 
                     Borrowing.dependency + Degree.of.Financial.Leverage..DFL. +
                     Operating.Profit.Per.Share..Yuan...+ ROA.C+ # nolint: line_length_linter.
-                    Current.Ratio + Total.Asset.Turnover + Working.Capital.to.Total.Assets
+                    Total.Asset.Turnover + Working.Capital.to.Total.Assets
 
 formula_3_log <- Bankrupt. ~ log(1+Total.debt.Total.net.worth) + Debt.ratio.. + 
                     Borrowing.dependency + Degree.of.Financial.Leverage..DFL. +
                     Operating.Profit.Per.Share..Yuan...+ ROA.C+ # nolint: line_length_linter.
-                    Current.Ratio + Total.Asset.Turnover + Working.Capital.to.Total.Assets
+                    Total.Asset.Turnover + Working.Capital.to.Total.Assets
+
+formula_3_quad <- Bankrupt. ~ I(Total.debt.Total.net.worth^2) + Debt.ratio.. + 
+                    Borrowing.dependency + Degree.of.Financial.Leverage..DFL. +
+                    Operating.Profit.Per.Share..Yuan...+ ROA.C+ # nolint: line_length_linter.
+                    Total.Asset.Turnover + Working.Capital.to.Total.Assets
 
 
 probit_model_base <- glm(formula_1, # nolint
-                    data=train, family=binomial(link="probit"), x=TRUE)
+                    data=raw_dataset, family=binomial(link="probit"), x=TRUE)
 
 probit_model_altman <- glm(formula_3, # nolint
-                    data=train, family=binomial(link="probit"), x=TRUE)
+                    data=raw_dataset, family=binomial(link="probit"), x=TRUE)
+
+probit_model_altman_log <- glm(formula_3_log, # nolint
+                    data=raw_dataset, family=binomial(link="probit"), x=TRUE)
+
+probit_model_altman_quad <- glm(formula_3_quad, # nolint
+                    data=raw_dataset, family=binomial(link="probit"), x=TRUE)
 
 weighted_model <- glm(formula_3, data=raw_dataset, family=binomial(link="probit"), x=TRUE, weights=weights)
 weighted_model_log <- glm(formula_3_log, data=raw_dataset, family=binomial(link="probit"), x=TRUE, weights=weights)
 
 me_base <- maBina(probit_model_base, x.mean = TRUE, rev.dum = TRUE, digits = 3, subset.name = NULL, subset.value)
 me_altman <- maBina(probit_model_altman, x.mean = TRUE, rev.dum = TRUE, digits = 3, subset.name = NULL, subset.value)
+me_altman_log <- maBina(probit_model_altman_log, x.mean = TRUE, rev.dum = TRUE, digits = 3, subset.name = NULL, subset.value)
+me_altman_quad <- maBina(probit_model_altman_quad, x.mean = TRUE, rev.dum = TRUE, digits = 3, subset.name = NULL, subset.value)
+
 me_weighted_model <- maBina(weighted_model, x.mean = TRUE, rev.dum = TRUE, digits = 3, subset.name = NULL, subset.value)
 me_weighted_model_log <- maBina(weighted_model_log, x.mean = TRUE, rev.dum = TRUE, digits = 3, subset.name = NULL, subset.value)
 
