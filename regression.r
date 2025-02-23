@@ -65,25 +65,3 @@ me_altman_quad <- maBina(probit_model_altman_quad, x.mean = TRUE, rev.dum = TRUE
 
 me_weighted_model <- maBina(weighted_model, x.mean = TRUE, rev.dum = TRUE, digits = 3, subset.name = NULL, subset.value)
 me_weighted_model_log <- maBina(weighted_model_log, x.mean = TRUE, rev.dum = TRUE, digits = 3, subset.name = NULL, subset.value)
-
-# calibration plot code
-
-predicted_probs <- (predict(weighted_model_log, type = "response"))
-actual_outcomes <- factor(raw_dataset$Bankrupt.)
-
-# Create a data frame with actual outcomes and predicted probabilities
-data <- data.frame(
-  actual = actual_outcomes,       # Replace 'bankruptcy' with your binary outcome variable
-  predicted = predicted_probs
-)
-
-# Generate calibration data
-calibration_curve <- calibration(actual ~ predicted, data = data, cuts = 10)
-
-# Plot the calibration curve
-xyplot(calibration_curve)
-
-predictions_val <- factor(round(predict(probit_model_base, newdata = val, type="response")))
-actual_val <- factor(val$Bankrupt.)
-
-conf_matrix <- confusionMatrix(data = predictions_val, reference = actual_val)
