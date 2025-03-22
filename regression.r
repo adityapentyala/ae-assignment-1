@@ -28,14 +28,12 @@ formula_2 <- Bankrupt. ~ Total.debt.Total.net.worth + Debt.ratio.. +
                     Current.Ratio
 
 formula_3 <- Bankrupt. ~ Total.debt.Total.net.worth + Debt.ratio.. + 
-                    Borrowing.dependency + Degree.of.Financial.Leverage..DFL. +
                     Operating.Profit.Per.Share..Yuan...+ ROA.C+ # nolint: line_length_linter.
                     Total.Asset.Turnover + Working.Capital.to.Total.Assets
 
-formula_3_log <- Bankrupt. ~ log(1+Total.debt.Total.net.worth) + Debt.ratio.. + 
-                    Borrowing.dependency + Degree.of.Financial.Leverage..DFL. +
-                    Operating.Profit.Per.Share..Yuan...+ ROA.C+ # nolint: line_length_linter.
-                    Total.Asset.Turnover + Working.Capital.to.Total.Assets
+formula_3_log <- Bankrupt. ~ log(1+Total.debt.Total.net.worth) + log(1+Debt.ratio..) + 
+                    log(1+Operating.Profit.Per.Share..Yuan...)+ ROA.C+ # nolint: line_length_linter.
+                    log(1+Total.Asset.Turnover) + log(1+Working.Capital.to.Total.Assets)
 
 formula_3_quad <- Bankrupt. ~ I(Total.debt.Total.net.worth^2) + Debt.ratio.. + 
                     Borrowing.dependency + Degree.of.Financial.Leverage..DFL. +
